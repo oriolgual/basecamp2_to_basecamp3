@@ -58,18 +58,16 @@ Capybara.register_driver :custom_selenium do |app|
 end
 Capybara.default_driver = :custom_selenium
 
-account_id = ARGV[1]
+account_id, project_id, todo_list_id = ARGV[3].split('/').map(&:to_i).select {|i| i > 0}
 Bcx.configure do |config|
   config.account = account_id
   config.user_agent = 'Basecamp 2, to Basecamp 3 todo migrator'
 end
 
-username = ARGV[2]
-password = ARGV[3]
-project_id = ARGV[4]
-todo_list_id = ARGV[5]
-basecamp_3_project_url = ARGV[6]
-usage = "ruby migrate_todo.rb firefox_profile_id account_id basecamp_2_username basecamp_2_password basecamp_2_project_id basecamp_2_todo_list_id basecamp_3_project_url"
+username = ARGV[1]
+password = ARGV[2]
+basecamp_3_project_url = ARGV[4]
+usage = "ruby migrate_todo.rb firefox_profile_id basecamp_2_username basecamp_2_password basecamp_2_todolist_url basecamp_3_project_todos_url"
 
 raise "Missing Firefox profile id. Usage: #{usage}" unless default_firefox_profile_name
 raise "Missing Basecamp 2 account. Usage: #{usage}" unless account_id
