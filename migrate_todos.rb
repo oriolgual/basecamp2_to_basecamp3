@@ -7,7 +7,8 @@ require 'byebug'
 
 def add_comment(session, comment)
   session.find('.thread--comments .collapsed_content button').click
-  session.execute_script("$('#comment_content_trix_input_comment').val('#{comment}')")
+  encoded = URI.escape(comment, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+  session.execute_script("document.querySelector('.trix_required_field').editor.insertHTML(decodeURIComponent(\"#{encoded}\"))")
   session.click_button "Add this comment"
 end
 
